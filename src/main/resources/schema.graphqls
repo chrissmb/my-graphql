@@ -1,0 +1,27 @@
+type Book {
+    id: ID!
+    title: String!
+    year: Int
+    author: Author
+}
+
+type Author {
+    id: ID!
+    name: String!
+}
+
+input BookInput {
+    title: String!
+    year: Int
+}
+
+# The Root Query for the application
+type Query {
+    getBook(id: ID): Book
+    getBooks: [Book]
+}
+
+# The Root Mutation for the application
+type Mutation {
+    saveBook(book: BookInput): Book
+}
