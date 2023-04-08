@@ -50,24 +50,4 @@ public class BookResolver implements GraphQLQueryResolver, GraphQLMutationResolv
                 .year(bookInput.getYear())
                 .build();
     }
-
-    private class MyGraphQLError extends RuntimeException implements GraphQLError {
-
-        private ErrorType errorType;
-
-        public MyGraphQLError(String message, ErrorType errorType) {
-            super(message);
-            this.errorType = errorType;
-        }
-
-        @Override
-        public List<SourceLocation> getLocations() {
-            return null;
-        }
-
-        @Override
-        public ErrorType getErrorType() {
-            return errorType;
-        }
-    }
 }
