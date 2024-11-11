@@ -1,17 +1,12 @@
 package com.example.mygraphql.resolver;
 
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.example.mygraphql.entity.Author;
 import com.example.mygraphql.entity.Book;
 import com.example.mygraphql.entity.BookInput;
 import com.example.mygraphql.exception.BusinessException;
-import graphql.ErrorType;
-import graphql.GraphQLError;
-import graphql.GraphQLException;
-import graphql.language.SourceLocation;
+import graphql.kickstart.tools.GraphQLMutationResolver;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +36,6 @@ public class BookResolver implements GraphQLQueryResolver, GraphQLMutationResolv
 
     public Book saveBook(BookInput bookInput) {
         if (bookInput.getTitle().isBlank()) {
-            //throw new MyGraphQLError("Title must be filled.", ErrorType.ValidationError);
             throw new BusinessException("Title must be filled.");
         }
         return Book.builder()

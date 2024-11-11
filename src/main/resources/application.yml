@@ -3,3 +3,4 @@ graphql:
     enabled: true
     corsEnabled: true
     mapping: /graphql
+    exception-handlers-enabled: true

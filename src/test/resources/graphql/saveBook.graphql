@@ -1,0 +1,10 @@
+mutation($book: BookInput) {
+    saveBook(book: $book) {
+        id
+        title
+        year
+        author {
+            id
+        }
+    }
+}

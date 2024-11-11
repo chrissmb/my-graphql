@@ -1,33 +1,22 @@
 package com.example.mygraphql.exception;
 
-import graphql.ExceptionWhileDataFetching;
 import graphql.GraphQLError;
-import graphql.servlet.DefaultGraphQLErrorHandler;
-import graphql.servlet.GenericGraphQLError;
+import graphql.kickstart.execution.error.GenericGraphQLError;
+import graphql.kickstart.spring.error.ErrorContext;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Component
-public class MyGraphQLErrorHandler extends DefaultGraphQLErrorHandler {
+public class MyGraphQLErrorHandler {
 
-    @Override
-    public List<GraphQLError> processErrors(List<GraphQLError> errors) {
-        errors = errors.stream().map(this::mapBusinessException).collect(Collectors.toList());
-        return super.processErrors(errors);
+    @ExceptionHandler(BusinessException.class)
+    public GraphQLError businessExceptionHandler(BusinessException e, ErrorContext errorContext) {
+        return new GenericGraphQLError("Business exception " + e.getMessage());
     }
 
-    private GraphQLError mapBusinessException(GraphQLError error) {
-        if (!isBusinessException(error)) {
-            return error;
-        }
-        BusinessException businessException = (BusinessException) ((ExceptionWhileDataFetching) error).getException();
-        return new GenericGraphQLError(businessException.getMessage());
+    @ExceptionHandler(Throwable.class)
+    public GraphQLError generalExceptionHandler(Throwable e) {
+        return new GenericGraphQLError("Unknown error: " + e.getMessage());
     }
 
-    private boolean isBusinessException(GraphQLError error) {
-        return error instanceof ExceptionWhileDataFetching &&
-                ((ExceptionWhileDataFetching) error).getException()  instanceof BusinessException;
-    }
 }
